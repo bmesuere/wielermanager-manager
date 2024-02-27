@@ -4,6 +4,7 @@ export default {
   title: "Wielermanager-manager",
   sidebar: false,
   pager: false,
+  footer: "Gemaakt met ❤️ door Bart Mesuere"
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
   // lets you organize them into sections and have unlisted pages.

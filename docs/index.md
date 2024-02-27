@@ -85,6 +85,7 @@ function byTeam({width} = {}) {
     title: "🚴 Welk team scoorde het best?",
     marginLeft: 160,
     width,
+    height: 700,
     grid: false,
     x: {
       axis: "top",
@@ -107,8 +108,29 @@ function byTeam({width} = {}) {
 }
 ```
 
+```js
+function byValue({width} = {}) {
+  return Plot.plot({
+    title: "🚴 Wie is zijn geld waard?",
+    marginLeft: 140,
+    width,
+    height: 700,
+    x: {axis: "top", grid: true, label: "Punten per miljoen"},
+    y: {label: null},
+    color: {scheme: "spectral", label: "Waarde"},
+    marks: [
+      Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: true, x: true, Totaal: d => `${d} punten`, y: false}}}),
+      Plot.ruleX([0])
+    ]
+  });
+}
+```
+
 <div class="grid grid-cols-2">
   <div class="card">
-  ${resize((width) => byTeam({width}))}
+    ${resize((width) => byTeam({width}))}
+  </div>
+  <div class="card">
+    ${resize((width) => byValue({width}))}
   </div>
 </div>

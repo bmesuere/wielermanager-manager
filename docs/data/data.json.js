@@ -22,7 +22,7 @@ const riders = allData.players.map(rider => {
   });
   const total = results.reduce((sum, result) => sum + result.points, 0);
   const team = teams.find(d => d.id === rider.clubId);
-  return { name: rider.name, team: team.name, value: rider.value, total, results };
+  return { name: rider.name, team: team.name, value: rider.value, total, valueForMoney: total / rider.value, results };
 });
 riders.sort((a, b) => b.total - a.total);
 riders.forEach((rider, i) => rider.position = i);
