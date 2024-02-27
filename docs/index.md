@@ -9,7 +9,7 @@ toc: false
   flex-direction: column;
   align-items: center;
   font-family: var(--sans-serif);
-  margin: 4rem 0 8rem;
+  margin: 2rem 0 6rem;
   text-wrap: balance;
   text-align: center;
 }
@@ -45,7 +45,7 @@ toc: false
 </style>
 
 <div class="hero">
-  <h1>Wielermanager-manager</h1>
+  <h1>Wieler<wbr>manager-manager</h1>
   <h2>Pedaling through the data. Insights to lead the pack.</h2>
 </div>
 
@@ -77,4 +77,38 @@ function scatter({width} = {}) {
 ```
 <div class="card">
   ${resize((width) => scatter({width}))}
+</div>
+
+```js
+function byTeam({width} = {}) {
+  return Plot.plot({
+    title: "🚴 Welk team scoorde het best?",
+    marginLeft: 160,
+    width,
+    grid: false,
+    x: {
+      axis: "top",
+      label: "Totaal aantal punten",
+      grid: true
+    },
+    y: {
+      label: null
+    },
+    color: {
+      scheme: "spectral"
+    },
+    marks: [
+      Plot.ruleX([0]),
+      Plot.ruleY(riders, Plot.groupY({x1: "min", x2: "max"}, {x: "total", y: "team", sort: {y: "-x2"}})),
+      Plot.dot(riders, {x: "total", y: "team", fill: "value", channels: {Naam: "name", Team: "team", Waarde: "value"},
+        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, y: false}}})
+    ]
+  });
+}
+```
+
+<div class="grid grid-cols-2">
+  <div class="card">
+  ${resize((width) => byTeam({width}))}
+  </div>
 </div>
