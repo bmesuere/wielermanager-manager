@@ -15,9 +15,9 @@ const riders = allData.players.map(rider => {
   const results = pastRaces.map(race => {
     const result = rider.stats.find(stat => stat.matchId === race.id);
     if (result) {
-      return { result: result.value, points: result.points };
+      return { race: race.order, result: result.value, points: result.points };
     } else {
-      return { result: "DNS", points: 0 };
+      return { race: race.order, result: "DNS", points: 0 };
     }
   });
   const total = results.reduce((sum, result) => sum + result.points, 0);
@@ -27,5 +27,21 @@ const riders = allData.players.map(rider => {
 riders.sort((a, b) => b.total - a.total);
 riders.forEach((rider, i) => rider.position = i);
 
+// create flat results
+const results = [];
+riders.forEach(rider => {
+  rider.results.forEach(result => {
+    results.push({
+      name: rider.name,
+      team: rider.team,
+      value: rider.value,
+      total: rider.total,
+      race: races.find(r => r.order === result.race).name,
+      result: result.result,
+      points: result.points
+    });
+  })
+})
+
 // output json
-process.stdout.write(JSON.stringify({ riders, teams, races }));
+process.stdout.write(JSON.stringify({ riders, results, teams, races, pastRaces }));

@@ -2,9 +2,10 @@
 export default {
   // The project’s title; used in the sidebar and webpage titles.
   title: "Wielermanager-manager",
+  theme: "light",
   sidebar: false,
   pager: false,
-  footer: "Gemaakt met ❤️ door Bart Mesuere"
+  footer: "Gemaakt met ❤️ door Bart Mesuere. Bugs of suggesties? <a href='https://github.com/bmesuere/wielermanager-manager'>Laat het me weten!</a>",
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
   // lets you organize them into sections and have unlisted pages.

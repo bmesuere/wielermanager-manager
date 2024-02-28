@@ -50,13 +50,13 @@ toc: false
 </div>
 
 ```js
-const {riders, races, teams} = await FileAttachment("data/data.json").json();
+const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json?version=4").json();
 ```
 
 ```js
 function scatter({width} = {}) {
   return Plot.plot({
-    title: "🚴 Wie pakte punten in het openingsweekend?",
+    title: "🚴 Wie pakte punten in de openingskoersen?",
     width,
     height: 500,
     grid: true,
@@ -133,4 +133,31 @@ function byValue({width} = {}) {
   <div class="card">
     ${resize((width) => byValue({width}))}
   </div>
+</div>
+
+```js
+function pointsByRace({width} = {}) {
+  return Plot.plot({
+    title: "🚴 Waar verzamelden de renners hun punten?",
+    width,
+    marginLeft: 140,
+    x: {axis: "top", grid: true, label: "Aantal punten"},
+    y: {label: null},
+    color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
+    marks: [
+      Plot.rectX(results, {
+        x: "points",
+        y: "name",
+        fill: "race",
+        sort: {y: "-x", limit: 20},
+        channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,
+        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, fill: true, x: true, y: false}}
+      }),
+      Plot.ruleX([0])
+    ]
+  });
+}
+```
+<div class="card">
+  ${resize((width) => pointsByRace({width}))}
 </div>
