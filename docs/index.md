@@ -138,18 +138,17 @@ function byValue({width} = {}) {
 ```js
 function pointsByRace({width} = {}) {
   return Plot.plot({
-    title: "🚴 Waar verzamelden de renners hun punten?",
     width,
     marginLeft: 140,
     x: {axis: "top", grid: true, label: "Aantal punten"},
     y: {label: null},
     color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
     marks: [
-      Plot.rectX(results, {
+      Plot.rectX(results.filter(r => teamFilter === "Alle teams" ? true : r.team === teamFilter), {
         x: "points",
         y: "name",
         fill: "race",
-        sort: {y: "-x", limit: 20},
+        sort: {y: "-x", limit: teamFilter === "Alle teams" ? 20 : 100},
         channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,
         tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, fill: true, x: true, y: false}}
       }),
@@ -158,6 +157,16 @@ function pointsByRace({width} = {}) {
   });
 }
 ```
+
+```js
+const teamFilterSelect = Inputs.select(["Alle teams", ...teams.map(t => t.name)], {label: null});
+const teamFilter = Generators.input(teamFilterSelect);
+```
+
 <div class="card">
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end">
+    <h2>🚴 Waar verzamelden de renners hun punten?</h2>
+    ${teamFilterSelect}
+  </div>
   ${resize((width) => pointsByRace({width}))}
 </div>
