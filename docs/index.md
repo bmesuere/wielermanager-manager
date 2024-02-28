@@ -64,7 +64,7 @@ function scatter({width} = {}) {
     grid: true,
     x: {label: "Waarde (miljoen)"},
     y: {label: "Punten"},
-    color: {scheme: "Turbo", label: "Totaal aantal punten"},
+    color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
       Plot.dot(riders, {
         x: "value",
