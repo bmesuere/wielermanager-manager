@@ -96,7 +96,7 @@ function byTeam({width} = {}) {
       label: null
     },
     color: {
-      scheme: "spectral"
+      scheme: "blues", domain: [0, 12], range: [0.3, 1]
     },
     marks: [
       Plot.ruleX([0]),
@@ -117,9 +117,9 @@ function byValue({width} = {}) {
     height: 700,
     x: {axis: "top", grid: true, label: "Punten per miljoen"},
     y: {label: null},
-    color: {scheme: "spectral", label: "Waarde"},
+    color: {scheme: "blues", label: "Waarde (miljoen)", domain: [0, 12], range: [0.3, 1]},
     marks: [
-      Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: true, x: true, Totaal: d => `${d} punten`, y: false}}}),
+      Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, Totaal: d => `${d} punten`, y: false}}}),
       Plot.ruleX([0])
     ]
   });
