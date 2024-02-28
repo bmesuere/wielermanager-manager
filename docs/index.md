@@ -50,7 +50,9 @@ toc: false
 </div>
 
 ```js
-const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json?version=4").json();
+// add a fake import to trigger the dataloader for the data
+FileAttachment("data/data.json");
+const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json?version=5").json();
 ```
 
 ```js
