@@ -50,8 +50,6 @@ toc: false
 </div>
 
 ```js
-// add a fake import to trigger the dataloader for the data
-FileAttachment("data/data.json");
 const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json").json();
 ```
 
@@ -97,7 +95,7 @@ function byTeam({width} = {}) {
     y: {
       label: null,
       tickSize: 0,
-      tickPadding: 18
+      tickPadding: 22
     },
     color: {
       scheme: "blues", domain: [0, 12], range: [0.3, 1]
@@ -107,7 +105,7 @@ function byTeam({width} = {}) {
       Plot.ruleY(riders, Plot.groupY({x1: "min", x2: "max"}, {x: "total", y: "team", sort: {y: "-x2"}})),
       Plot.dot(riders, {x: "total", y: "team", fill: "value", channels: {Naam: "name", Team: "team", Waarde: "value"},
         tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, y: false}}}),
-      Plot.image(teams, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.id}.png`})
+      Plot.image(teams, {y: "name", x: 0, dx: -12, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.id}.png`})
     ]
   });
 }
@@ -121,12 +119,12 @@ function byValue({width} = {}) {
     width,
     height: 700,
     x: {axis: "top", grid: true, label: "Punten per miljoen"},
-    y: {label: null, tickSize: 0, tickPadding: 16},
+    y: {label: null, tickSize: 0, tickPadding: 20},
     color: {scheme: "blues", label: "Waarde (miljoen)", domain: [0, 12], range: [0.3, 1]},
     marks: [
       Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, Totaal: d => `${d} punten`, y: false}}}),
       Plot.ruleX([0]),
-      Plot.image(riders, {y: "name", x: 0, dx: -8, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
+      Plot.image(riders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
