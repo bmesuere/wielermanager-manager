@@ -52,7 +52,7 @@ toc: false
 ```js
 // add a fake import to trigger the dataloader for the data
 FileAttachment("data/data.json");
-const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json?version=5").json();
+const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json").json();
 ```
 
 ```js
@@ -85,7 +85,7 @@ function scatter({width} = {}) {
 function byTeam({width} = {}) {
   return Plot.plot({
     title: "🚴 Welk team scoorde het best?",
-    marginLeft: 160,
+    marginLeft: 180,
     width,
     height: 700,
     grid: false,
@@ -95,7 +95,9 @@ function byTeam({width} = {}) {
       grid: true
     },
     y: {
-      label: null
+      label: null,
+      tickSize: 0,
+      tickPadding: 18
     },
     color: {
       scheme: "blues", domain: [0, 12], range: [0.3, 1]
@@ -104,7 +106,8 @@ function byTeam({width} = {}) {
       Plot.ruleX([0]),
       Plot.ruleY(riders, Plot.groupY({x1: "min", x2: "max"}, {x: "total", y: "team", sort: {y: "-x2"}})),
       Plot.dot(riders, {x: "total", y: "team", fill: "value", channels: {Naam: "name", Team: "team", Waarde: "value"},
-        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, y: false}}})
+        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, y: false}}}),
+      Plot.image(teams, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.id}.png`})
     ]
   });
 }
@@ -118,11 +121,12 @@ function byValue({width} = {}) {
     width,
     height: 700,
     x: {axis: "top", grid: true, label: "Punten per miljoen"},
-    y: {label: null},
+    y: {label: null, tickSize: 0, tickPadding: 16},
     color: {scheme: "blues", label: "Waarde (miljoen)", domain: [0, 12], range: [0.3, 1]},
     marks: [
       Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, Totaal: d => `${d} punten`, y: false}}}),
-      Plot.ruleX([0])
+      Plot.ruleX([0]),
+      Plot.image(riders, {y: "name", x: 0, dx: -8, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
@@ -143,7 +147,7 @@ function pointsByRace({width} = {}) {
     width,
     marginLeft: 140,
     x: {axis: "top", grid: true, label: "Aantal punten"},
-    y: {label: null},
+    y: {label: null, tickSize: 0, tickPadding: 20},
     color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
     marks: [
       Plot.rectX(results.filter(r => teamFilter === "Alle teams" ? true : r.team === teamFilter), {
@@ -154,7 +158,8 @@ function pointsByRace({width} = {}) {
         channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,
         tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, fill: true, x: true, y: false}}
       }),
-      Plot.ruleX([0])
+      Plot.ruleX([0]),
+      Plot.image(riders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
