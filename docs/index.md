@@ -49,34 +49,46 @@ toc: false
   <h2>Pedaling through the data. Insights to lead the pack.</h2>
 </div>
 
+
 ```js
 const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json").json();
 ```
 
 ```js
-function scatter({width} = {}) {
+function pointsByRace({width} = {}) {
   return Plot.plot({
-    title: "🚴 Wie pakte punten in de openingskoersen?",
     width,
-    height: 500,
-    grid: true,
-    x: {label: "Waarde (miljoen)"},
-    y: {label: "Punten"},
-    color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
+    marginLeft: 140,
+    x: {axis: "top", grid: true, label: "Aantal punten"},
+    y: {label: null, tickSize: 0, tickPadding: 20},
+    color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
     marks: [
-      Plot.dot(riders, {
-        x: "value",
-        y: "total",
-        stroke: "total",
-        channels: {Naam: "name", Team: "team", Waarde: "value"},
-        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, stroke: true, x: false, y: false}}
-      })
+      Plot.rectX(results.filter(r => teamFilter === "Alle teams" ? true : r.team === teamFilter), {
+        x: "points",
+        y: "name",
+        fill: "race",
+        sort: {y: "-x", limit: teamFilter === "Alle teams" ? 20 : 100},
+        channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,
+        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, fill: true, x: true, y: false}}
+      }),
+      Plot.ruleX([0]),
+      Plot.image(riders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
 ```
+
+```js
+const teamFilterSelect = Inputs.select(["Alle teams", ...teams.map(t => t.name)], {label: null});
+const teamFilter = Generators.input(teamFilterSelect);
+```
+
 <div class="card">
-  ${resize((width) => scatter({width}))}
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end">
+    <h2>🚴 Waar verzamelden de renners hun punten?</h2>
+    ${teamFilterSelect}
+  </div>
+  ${resize((width) => pointsByRace({width}))}
 </div>
 
 ```js
@@ -139,39 +151,30 @@ function byValue({width} = {}) {
   </div>
 </div>
 
+
 ```js
-function pointsByRace({width} = {}) {
+function scatter({width} = {}) {
   return Plot.plot({
+    title: "🚴 Welke renners pakten punten?",
     width,
-    marginLeft: 140,
-    x: {axis: "top", grid: true, label: "Aantal punten"},
-    y: {label: null, tickSize: 0, tickPadding: 20},
-    color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
+    height: 500,
+    grid: true,
+    x: {label: "Waarde (miljoen)"},
+    y: {label: "Punten"},
+    color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
-      Plot.rectX(results.filter(r => teamFilter === "Alle teams" ? true : r.team === teamFilter), {
-        x: "points",
-        y: "name",
-        fill: "race",
-        sort: {y: "-x", limit: teamFilter === "Alle teams" ? 20 : 100},
-        channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,
-        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, fill: true, x: true, y: false}}
-      }),
-      Plot.ruleX([0]),
-      Plot.image(riders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
+      Plot.dot(riders, {
+        x: "value",
+        y: "total",
+        stroke: "total",
+        channels: {Naam: "name", Team: "team", Waarde: "value"},
+        tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, stroke: true, x: false, y: false}}
+      })
     ]
   });
 }
 ```
 
-```js
-const teamFilterSelect = Inputs.select(["Alle teams", ...teams.map(t => t.name)], {label: null});
-const teamFilter = Generators.input(teamFilterSelect);
-```
-
 <div class="card">
-  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end">
-    <h2>🚴 Waar verzamelden de renners hun punten?</h2>
-    ${teamFilterSelect}
-  </div>
-  ${resize((width) => pointsByRace({width}))}
+  ${resize((width) => scatter({width}))}
 </div>
