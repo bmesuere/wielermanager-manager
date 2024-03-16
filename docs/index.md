@@ -95,7 +95,7 @@ const teamFilter = Generators.input(teamFilterSelect);
 function byTeam({width} = {}) {
   return Plot.plot({
     title: "🚴 Welk team scoorde het best?",
-    marginLeft: 180,
+    marginLeft: 140,
     width,
     height: 700,
     grid: false,

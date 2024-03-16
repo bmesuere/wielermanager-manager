@@ -8,7 +8,7 @@ const races = allData.matches.map(race => ({ id: race.id, order: race.weekId, na
 const pastRaces = races.filter(race => new Date(race.date) < Date.now());
 
 // extract teams
-const teams = allData.clubs.map(team => ({ id: team.id, name: team.name }));
+const teams = allData.clubs.map(team => ({ id: team.id, name: team.name.split(" - ").slice(0, 2).join(" - ") }));
 
 // extract riders
 const riders = allData.players.map(rider => {
