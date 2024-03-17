@@ -34,6 +34,7 @@ riders.forEach(rider => {
     results.push({
       name: rider.name,
       team: rider.team,
+      teamId: rider.teamId,
       value: rider.value,
       total: rider.total,
       race: races.find(r => r.order === result.race).name,
