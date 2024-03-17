@@ -180,27 +180,36 @@ function scatter({width} = {}) {
 
 ```js
 function heatmap({width} = {}) {
+  const r = results.filter(r => teamFilter2 === "Alle teams" ? true : r.team === teamFilter2)
   return Plot.plot({
-    title: "🚴 Hoe consequent presteerden de renners?",
     marginLeft: 140,
     marginTop: 130,
     marginRight: 70,
     padding: 0,
     x: {axis: "top", label: null, tickRotate: -45, domain: races.map(d => d.name)},
     y: {label: null, tickSize: 0, tickPadding: 20},
-    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0, 0.9], domain: [0, 100]},
+    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0.15, 0.9], domain: [0, 100]},
     opacity: {range: [0.3, 1]},
     marks: [
-      Plot.cell(results, {x: "race", y: "name", fill: "points", inset: 0, opacity: d => d.result !== 'DNS',
+      Plot.cell(r, {x: "race", y: "name", fill: "points", inset: 0, opacity: d => d.result !== 'DNS',
         channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total", Wedstrijd: "race"} ,
         tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, x: false, Wedstrijd: true, fill: true, y: false, opacity: false}} }),
-      Plot.text(results, {x: "race", y: "name", text: d => d.result === 'DNS' ? '' : d.points, fill: "black", title: "total", sort: {y: "-title", limit: 20}}),
-      Plot.image(results.filter(d => d.race === "Omloop Het Nieuwsblad"), {y: "name", x: "race", dx: -25, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
+      Plot.text(r, {x: "race", y: "name", text: d => d.result === 'DNS' ? '' : d.points, fill: "black", title: "total", sort: {y: "-title", limit: 20}}),
+      Plot.image(r.filter(d => d.race === "Omloop Het Nieuwsblad"), {y: "name", x: "race", dx: -25, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
 ```
 
+```js
+const teamFilterSelect2 = Inputs.select(["Alle teams", ...teams.map(t => t.name)], {label: null});
+const teamFilter2 = Generators.input(teamFilterSelect2);
+```
+
 <div class="card">
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end">
+    <h2>🚴 Hoe consequent presteerden de renners?</h2>
+    ${teamFilterSelect2}
+  </div>
   ${resize((width) => heatmap({width}))}
 </div>
