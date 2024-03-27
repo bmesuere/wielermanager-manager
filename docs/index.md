@@ -61,7 +61,7 @@ function pointsByRace({width} = {}) {
     marginLeft: 140,
     x: {axis: "top", grid: true, label: "Aantal punten"},
     y: {label: null, tickSize: 0, tickPadding: 20},
-    color: {scheme: "observable10", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
+    color: {scheme: "spectral", label: "Race", legend: true, domain: pastRaces.map(r => r.name)},
     marks: [
       Plot.rectX(results.filter(r => teamFilter === "Alle teams" ? true : r.team === teamFilter), {
         x: "points",
