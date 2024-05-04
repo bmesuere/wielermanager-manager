@@ -52,6 +52,8 @@ toc: false
 
 ```js
 const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json").json();
+console.log(results);
+console.log(pastRaces);
 ```
 
 ```js
@@ -188,14 +190,14 @@ function heatmap({width} = {}) {
     padding: 0,
     x: {axis: "top", label: null, tickRotate: -45, domain: races.map(d => d.name)},
     y: {label: null, tickSize: 0, tickPadding: 20},
-    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0.15, 0.9], domain: [0, 100]},
+    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0.15, 0.9], domain: [0, 130]},
     opacity: {range: [0.3, 1]},
     marks: [
       Plot.cell(r, {x: "race", y: "name", fill: "points", inset: 0, opacity: d => d.result !== 'DNS',
         channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total", Wedstrijd: "race"} ,
         tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, Totaal: d => `${d} punten`, x: false, Wedstrijd: true, fill: true, y: false, opacity: false}} }),
       Plot.text(r, {x: "race", y: "name", text: d => d.result === 'DNS' ? '' : d.points, fill: "black", title: "total", sort: {y: "-title", limit: 20}}),
-      Plot.image(r.filter(d => d.race === "Omloop Het Nieuwsblad"), {y: "name", x: "race", dx: -25, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
+      Plot.image(r.filter(d => d.race === races[0].name), {y: "name", x: "race", dx: -25, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
