@@ -11,7 +11,7 @@ const pastRaces = races.filter(race => new Date(race.date) < Date.now());
 const teams = allData.clubs.map(team => ({ id: team.id, name: team.name.split(" - ").slice(0, 2).join(" - ") }));
 
 // extract riders
-const riders = allData.players.map(rider => {
+const riders = allData.players.filter(d => d.active == 1).map(rider => {
   const results = pastRaces.map(race => {
     const result = rider.stats.find(stat => stat.matchId === race.id);
     if (result) {
