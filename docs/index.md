@@ -164,7 +164,7 @@ function scatter({width} = {}) {
     y: {label: "Punten"},
     color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
-      Plot.dot(riders, {
+      Plot.dot(riders.filter(d => d.value < 15), {
         x: "value",
         y: "total",
         stroke: "total",
