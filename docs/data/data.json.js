@@ -1,5 +1,5 @@
 // fetch data
-const response = await fetch("https://fanarena.s3.amazonaws.com/data_GIRO_2024_static.json");
+const response = await fetch("https://fanarena.s3.amazonaws.com/data_TOURM_2024_static.json");
 if (!response.ok) throw new Error(`fetch failed: ${response.status}`);
 const allData = await response.json();
 
@@ -49,7 +49,7 @@ process.stdout.write(JSON.stringify({ riders, results, teams, races, pastRaces }
 
 function type2emoji(type) {
   if (type === "hills") return "⛰️";
-  if (type === "mountains") return "🏔️";
+  if (type === "mountains") return "⛰️⛰️";
   if (type === "flat") return "🏁";
   if (type === "time") return "⏱️";
 }

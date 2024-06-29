@@ -160,7 +160,7 @@ function scatter({width} = {}) {
     width,
     height: 500,
     grid: true,
-    x: {label: "Waarde (miljoen)"},
+    x: {label: "Waarde (miljoen)", domain: [1, 11]},
     y: {label: "Punten"},
     color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
