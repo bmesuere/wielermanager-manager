@@ -52,4 +52,5 @@ function type2emoji(type) {
   if (type === "mountains") return "⛰️⛰️";
   if (type === "flat") return "🏁";
   if (type === "time") return "⏱️";
+  return "";
 }
