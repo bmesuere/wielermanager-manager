@@ -1,5 +1,5 @@
 // fetch data
-const response = await fetch("https://fanarena.s3.amazonaws.com/data_TOURM_2024_static.json");
+const response = await fetch("https://fanarena.s3.amazonaws.com/data_VUELM_2024_static.json");
 if (!response.ok) throw new Error(`fetch failed: ${response.status}`);
 const allData = await response.json();
 
