@@ -160,7 +160,7 @@ function scatter({width} = {}) {
     width,
     height: 500,
     grid: true,
-    x: {label: "Waarde (miljoen)", domain: [1, 11]},
+    x: {label: "Waarde (miljoen)", domain: [1, 13]},
     y: {label: "Punten"},
     color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
@@ -190,7 +190,7 @@ function heatmap({width} = {}) {
     padding: 0,
     x: {axis: "top", label: null, tickRotate: -45, domain: races.map(d => d.name)},
     y: {label: null, tickSize: 0, tickPadding: 20},
-    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0.15, 0.9], domain: [0, 130]},
+    color: {label: "punten", type: "linear", scheme: "blues", range: dark ? [0.9, 0] : [0.15, 0.9], domain: [0, 100]},
     opacity: {range: [0.3, 1]},
     marks: [
       Plot.cell(r, {x: "race", y: "name", fill: "points", inset: 0, opacity: d => d.result !== 'DNS',
