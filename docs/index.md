@@ -52,8 +52,6 @@ toc: false
 
 ```js
 const {riders, results, races, pastRaces, teams} = await FileAttachment("data/data.json").json();
-console.log(results);
-console.log(pastRaces);
 ```
 
 ```js
@@ -125,10 +123,20 @@ function byTeam({width} = {}) {
 }
 ```
 
+
+```js
+const valueFilterSelect = Inputs.select([
+  "Alle waarden",
+  ...Array.from(new Set(riders.map(r => r.value))).sort((a, b) => a - b).map(v => v + " miljoen")
+], {label: null});
+const valueFilter = Generators.input(valueFilterSelect);
+```
+
 ```js
 function byValue({width} = {}) {
+  const filteredRiders = valueFilter === "Alle waarden" ? riders : riders.filter(r => r.value === parseInt(valueFilter));
   return Plot.plot({
-    title: "🚴 Wie is zijn geld waard?",
+    title: null,
     marginLeft: 140,
     width,
     height: 700,
@@ -136,9 +144,9 @@ function byValue({width} = {}) {
     y: {label: null, tickSize: 0, tickPadding: 20},
     color: {scheme: "blues", label: "Waarde (miljoen)", domain: [0, 12], range: dark ? [1, 0.3] : [0.3, 1]},
     marks: [
-      Plot.barX(riders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, Totaal: d => `${d} punten`, y: false}}}),
+      Plot.barX(filteredRiders, {x: "valueForMoney", y: "name", fill: "value", sort: {y: "-x", limit: 36}, channels: {Naam: "name", Team: "team", Waarde: "value", Totaal: "total"} ,tip: {format: {Naam: true, Team: true, Waarde: d => `${d} miljoen`, fill: false, x: true, Totaal: d => `${d} punten`, y: false}}}),
       Plot.ruleX([0]),
-      Plot.image(riders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
+      Plot.image(filteredRiders, {y: "name", x: 0, dx: -10, src: d => `https://s3.eu-west-3.amazonaws.com/sporza-fantasy-manager/jerseys/cycling/${d.teamId}.png`})
     ]
   });
 }
@@ -149,6 +157,10 @@ function byValue({width} = {}) {
     ${resize((width) => byTeam({width}))}
   </div>
   <div class="card">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: flex-end">
+      <h2>🚴 Wie is zijn geld waard?</h2>
+      ${valueFilterSelect}
+    </div>
     ${resize((width) => byValue({width}))}
   </div>
 </div>
