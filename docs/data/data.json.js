@@ -1,5 +1,5 @@
 // fetch data
-const response = await fetch("https://fanarena.s3.amazonaws.com/data_KLASM_2025_static.json");
+const response = await fetch("https://fanarena.s3.amazonaws.com/data_GIRO_2025_full.json");
 if (!response.ok) throw new Error(`fetch failed: ${response.status}`);
 const allData = await response.json();
 

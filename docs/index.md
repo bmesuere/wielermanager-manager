@@ -172,7 +172,7 @@ function scatter({width} = {}) {
     width,
     height: 500,
     grid: true,
-    x: {label: "Waarde (miljoen)", domain: [1, 13]},
+    x: {label: "Waarde (miljoen)", domain: [1, 10], ticks: 10, tickFormat: d => d + " mil"},
     y: {label: "Punten"},
     color: {scheme: "Turbo", label: "Totaal aantal punten", range: [0.05, 0.95]},
     marks: [
